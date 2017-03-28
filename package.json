@@ -1,0 +1,22 @@
+{
+  "name": "slotty",
+  "version": "1.0.0",
+  "description": "Schedule your sessions",
+  "main": "index.js",
+  "scripts": {
+    "test": "elm-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhajratw/slotty.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nhajratw/slotty/issues"
+  },
+  "homepage": "https://github.com/nhajratw/slotty#readme",
+  "devDependencies": {
+    "elm-live": "^2.7.4"
+  }
+}
