@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Svg exposing (Svg, svg, rect, text_)
-import Svg.Attributes exposing (version, viewBox, x, y, cx, cy, r, fill, width, height)
+import Svg.Attributes exposing (version, fontWeight, fill, x, y, width, height)
 
 
 main : Program Never Model Msg
@@ -20,7 +20,7 @@ main =
 
 
 type alias TimeSlot =
-    { day : Int, start : Int }
+    { day : Int, start : Int, end : Int }
 
 
 type alias Card =
@@ -34,11 +34,11 @@ type alias Model =
 init : ( Model, Cmd Msg )
 init =
     ( { cards =
-            [ { title = "First", speaker = "Jane", timeSlot = { day = 1, start = 1 } }
-            , { title = "Second", speaker = "Joe", timeSlot = { day = 2, start = 2 } }
-            , { title = "Third", speaker = "Fred", timeSlot = { day = 3, start = 4 } }
-            , { title = "Fourth", speaker = "Nayan", timeSlot = { day = 4, start = 1 } }
-            , { title = "Fifth", speaker = "Nayan", timeSlot = { day = 3, start = 3 } }
+            [ { title = "First", speaker = "Jane", timeSlot = { day = 1, start = 1, end = 3 } }
+            , { title = "Second", speaker = "Joe", timeSlot = { day = 2, start = 2, end = 3 } }
+            , { title = "Third", speaker = "Fred", timeSlot = { day = 3, start = 4, end = 5 } }
+            , { title = "Fourth", speaker = "Nayan", timeSlot = { day = 4, start = 1, end = 2 } }
+            , { title = "Fifth", speaker = "Nayan", timeSlot = { day = 3, start = 3, end = 4 } }
             ]
       }
     , Cmd.none
@@ -91,9 +91,13 @@ cardView card =
         y_ =
             card.timeSlot.start * 150
 
+        height_ =
+            (card.timeSlot.end - card.timeSlot.start) * 100
+
         x_ =
             card.timeSlot.day * 150
     in
-        [ rect [ fill "lightblue", x (toString x_), y (toString y_), width "100", height "100" ] []
-        , text_ [ x (toString (x_ + 20)), y (toString (y_ + 40)) ] [ text card.title ]
+        [ rect [ fill "lightblue", x (toString x_), y (toString y_), width "100", height (toString height_) ] []
+        , text_ [ x (toString (x_ + 20)), y (toString (y_ + 40)), fontWeight "bold" ] [ text card.title ]
+        , text_ [ x (toString (x_ + 20)), y (toString (y_ + 60)) ] [ text card.speaker ]
         ]
