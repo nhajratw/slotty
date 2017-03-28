@@ -1,8 +1,8 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Svg exposing (Svg, svg, rect, text_)
-import Svg.Attributes exposing (version, fontWeight, fill, x, y, width, height)
+import Material.Card as Card
+import Material.Options as Options exposing (css)
 
 
 main : Program Never Model Msg
@@ -23,17 +23,17 @@ type alias TimeSlot =
     { day : Int, start : Int, end : Int }
 
 
-type alias Card =
+type alias Item =
     { title : String, speaker : String, timeSlot : TimeSlot }
 
 
 type alias Model =
-    { cards : List Card }
+    { items : List Item }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { cards =
+    ( { items =
             [ { title = "First", speaker = "Jane", timeSlot = { day = 1, start = 1, end = 3 } }
             , { title = "Second", speaker = "Joe", timeSlot = { day = 2, start = 2, end = 3 } }
             , { title = "Third", speaker = "Fred", timeSlot = { day = 3, start = 4, end = 5 } }
@@ -79,25 +79,29 @@ type alias Dot =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ svg [ version "1.1", width "1440", height "800" ]
-            (List.concatMap cardView model.cards)
-        ]
+    div [] (List.map itemView model.items)
 
 
-cardView : Card -> List (Svg Msg)
-cardView card =
+itemView : Item -> Html Msg
+itemView item =
     let
         y_ =
-            card.timeSlot.start * 150
+            item.timeSlot.start * 150
 
         height_ =
-            (card.timeSlot.end - card.timeSlot.start) * 100
+            (item.timeSlot.end - item.timeSlot.start) * 100
 
         x_ =
-            card.timeSlot.day * 150
+            item.timeSlot.day * 150
     in
-        [ rect [ fill "lightblue", x (toString x_), y (toString y_), width "100", height (toString height_) ] []
-        , text_ [ x (toString (x_ + 20)), y (toString (y_ + 40)), fontWeight "bold" ] [ text card.title ]
-        , text_ [ x (toString (x_ + 20)), y (toString (y_ + 60)) ] [ text card.speaker ]
-        ]
+        Card.view
+            [ css "width" "256px", css "border" "1px solid black", css "background-color" "lightblue" ]
+            [ Card.title
+                [ css "flex-direction" "column" ]
+                [ Card.head [] [ text item.title ]
+                , Card.subhead [] [ text item.speaker ]
+                , Options.div
+                    [ css "padding" "2rem 2rem 0 2rem" ]
+                    []
+                ]
+            ]
