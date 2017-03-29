@@ -9,12 +9,27 @@ all : Test
 all =
     describe "Sample Test Suite"
         [ describe "Schedule Time"
-            [ test "minimal time range" <|
+            [ test "single value" <|
                 \() ->
-                    Expect.equal (timeRange (ScheduleTime 1 0) (ScheduleTime 1 0)) [ ScheduleTime 1 0 ]
-            , test "larger range" <|
+                    Expect.equal (timeRange (ScheduleTime 1 0) (ScheduleTime 1 0))
+                        [ ScheduleTime 1 0
+                        ]
+            , test "dual values" <|
                 \() ->
-                    Expect.equal (timeRange (ScheduleTime 1 0) (ScheduleTime 1 5)) [ ScheduleTime 1 0, ScheduleTime 1 5 ]
+                    Expect.equal (timeRange (ScheduleTime 1 0) (ScheduleTime 1 5))
+                        [ ScheduleTime 1 0
+                        , ScheduleTime 1 5
+                        ]
+            , test "multiple values" <|
+                \() ->
+                    Expect.equal (timeRange (ScheduleTime 1 0) (ScheduleTime 1 25))
+                        [ ScheduleTime 1 0
+                        , ScheduleTime 1 5
+                        , ScheduleTime 1 10
+                        , ScheduleTime 1 15
+                        , ScheduleTime 1 20
+                        , ScheduleTime 1 25
+                        ]
             ]
         , describe
             "Divisible by 5"
