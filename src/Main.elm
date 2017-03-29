@@ -2,6 +2,8 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Item exposing (Item, itemView)
+import Date exposing (Date)
+import Date.Extra as Date
 
 
 main : Program Never Model Msg
@@ -18,13 +20,19 @@ main =
 -- MODEL
 
 
+type alias Time =
+    { hour : Int, minute : Int }
+
+
 type alias Model =
-    { items : List Item }
+    { locations : List String, times : List Time, items : List Item }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { items =
+    ( { locations = [ "Room A", "Room B", "Room C", "Room D" ]
+      , times = timeRange (Time 8 0) (Time 17 0)
+      , items =
             [ { title = "First", speaker = "Jane", timeSlot = { day = 1, start = 1, end = 3 } }
             , { title = "Second", speaker = "Joe", timeSlot = { day = 2, start = 2, end = 3 } }
             , { title = "Third", speaker = "Fred", timeSlot = { day = 3, start = 4, end = 5 } }
@@ -36,8 +44,9 @@ init =
     )
 
 
-
--- UPDATE
+timeRange : Time -> Time -> List Time
+timeRange startTime endTime =
+    List.range startTime.hour endTime.hour
 
 
 type Msg
