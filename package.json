@@ -4,8 +4,9 @@
   "description": "Schedule your sessions",
   "main": "index.js",
   "scripts": {
-    "test": "elm-test",
-    "start": "elm-live src/Main.elm"
+    "compile": "elm-make src/Main.elm",
+    "start": "elm-live src/Main.elm",
+    "test": "elm-test"
   },
   "repository": {
     "type": "git",

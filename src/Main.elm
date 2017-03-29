@@ -2,8 +2,7 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Item exposing (Item, itemView)
-import Date exposing (Date)
-import Date.Extra as Date
+import ScheduleTime exposing (ScheduleTime, timeRange)
 
 
 main : Program Never Model Msg
@@ -20,18 +19,14 @@ main =
 -- MODEL
 
 
-type alias Time =
-    { hour : Int, minute : Int }
-
-
 type alias Model =
-    { locations : List String, times : List Time, items : List Item }
+    { locations : List String, times : List ScheduleTime, items : List Item }
 
 
 init : ( Model, Cmd Msg )
 init =
     ( { locations = [ "Room A", "Room B", "Room C", "Room D" ]
-      , times = timeRange (Time 8 0) (Time 17 0)
+      , times = timeRange (ScheduleTime 8 0) (ScheduleTime 17 0)
       , items =
             [ { title = "First", speaker = "Jane", timeSlot = { day = 1, start = 1, end = 3 } }
             , { title = "Second", speaker = "Joe", timeSlot = { day = 2, start = 2, end = 3 } }
@@ -42,11 +37,6 @@ init =
       }
     , Cmd.none
     )
-
-
-timeRange : Time -> Time -> List Time
-timeRange startTime endTime =
-    List.range startTime.hour endTime.hour
 
 
 type Msg

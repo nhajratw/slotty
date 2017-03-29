@@ -2,39 +2,27 @@ module Tests exposing (..)
 
 import Test exposing (..)
 import Expect
-import Fuzz exposing (list, int, tuple, string)
-import String
+import ScheduleTime exposing (ScheduleTime, timeRange, divisibleBy5)
 
 
 all : Test
 all =
     describe "Sample Test Suite"
-        [ describe "mine"
-            [ test "first" <|
+        [ describe "Schedule Time"
+            [ test "minimal time range" <|
                 \() ->
-                    Expect.equal (1 + 1) 2
+                    Expect.equal (timeRange (ScheduleTime 1 0) (ScheduleTime 1 0)) [ ScheduleTime 1 0 ]
+            , test "larger range" <|
+                \() ->
+                    Expect.equal (timeRange (ScheduleTime 1 0) (ScheduleTime 1 5)) [ ScheduleTime 1 0, ScheduleTime 1 5 ]
             ]
         , describe
-            "Unit test examples"
-            [ test "Addition" <|
+            "Divisible by 5"
+            [ test "divisible" <|
                 \() ->
-                    Expect.equal (3 + 7) 10
-            , test "String.left" <|
+                    Expect.equal (divisibleBy5 10) True
+            , test "indivisible" <|
                 \() ->
-                    Expect.equal "a" (String.left 1 "abcdefg")
-            ]
-        , describe "Fuzz test examples, using randomly generated input"
-            [ fuzz (list int) "Lists always have positive length" <|
-                \aList ->
-                    List.length aList |> Expect.atLeast 0
-            , fuzz (list int) "Sorting a list does not change its length" <|
-                \aList ->
-                    List.sort aList |> List.length |> Expect.equal (List.length aList)
-            , fuzzWith { runs = 1000 } int "List.member will find an integer in a list containing it" <|
-                \i ->
-                    List.member i [ i ] |> Expect.true "If you see this, List.member returned False!"
-            , fuzz2 string string "The length of a string equals the sum of its substrings' lengths" <|
-                \s1 s2 ->
-                    s1 ++ s2 |> String.length |> Expect.equal (String.length s1 + String.length s2)
+                    Expect.equal (divisibleBy5 7) False
             ]
         ]
