@@ -28,7 +28,7 @@ type alias Model =
 init : ( Model, Cmd Msg )
 init =
     ( { locations = [ "Room A", "Room B", "Room C", "Room D" ]
-      , times = timeRange (Date.fromParts 2017 May 4 8 0 0 0) (Date.fromParts 1999 May 4 17 0 0 0)
+      , times = timeRange (Date.fromParts 2017 May 4 8 0 0 0) (Date.fromParts 2017 May 4 17 0 0 0)
       , items =
             [ { title = "First", speaker = "Jane", timeSlot = { day = 1, start = 1, end = 3 } }
             , { title = "Second", speaker = "Joe", timeSlot = { day = 2, start = 2, end = 3 } }
@@ -67,4 +67,12 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    div [] (List.map itemView model.items)
+    div []
+        [ div [] (List.map timesView model.times)
+        , div [] (List.map itemView model.items)
+        ]
+
+
+timesView : Date -> Html Msg
+timesView time =
+    text <| Date.toFormattedString "h:mm" time
