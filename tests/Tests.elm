@@ -3,8 +3,16 @@ module Tests exposing (..)
 import Test exposing (..)
 import Expect
 import ScheduleTime exposing (ScheduleTime, timeRange)
-import Date exposing (Month(..))
+import Date exposing (Date, Month(..))
 import Date.Extra as Date
+
+
+-- timeToDate : String -> Date
+-- timeToDate time =
+--     let
+--         timeParts =
+--             String.split ":" time
+--     in
 
 
 all : Test
