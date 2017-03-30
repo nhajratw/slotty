@@ -1,8 +1,8 @@
 module ScheduleTime exposing (..)
 
-import Time exposing (inMilliseconds)
+import Time exposing (inMilliseconds, minute)
 import Date exposing (Date, Month(..), toTime)
-import Date.Extra as Date
+import Date.Extra as Date exposing (Interval(..))
 
 
 type alias ScheduleTime =
@@ -11,7 +11,11 @@ type alias ScheduleTime =
 
 timeRange : Date -> Date -> List Date
 timeRange startTime endTime =
-    List.map everyFiveMinutes (List.range (dateToMillis startTime) (dateToMillis endTime))
+    if (Date.diff Minute startTime endTime < 5) then
+        [ endTime ]
+    else
+        startTime
+            :: (timeRange (Date.add Minute 5 startTime) endTime)
 
 
 dateToMillis : Date -> Int
