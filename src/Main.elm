@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (..)
+import Html.Attributes exposing (class, id, style)
 import Item exposing (Item, itemView)
 import ScheduleTime exposing (ScheduleTime, timeRange)
 import Date exposing (Date, Month(..))
@@ -28,7 +29,7 @@ type alias Model =
 init : ( Model, Cmd Msg )
 init =
     ( { locations = [ "Room A", "Room B", "Room C", "Room D", "Room E" ]
-      , times = timeRange (Date.fromParts 2017 May 4 8 0 0 0) (Date.fromParts 2017 May 4 17 0 0 0)
+      , times = timeRange (Date.fromParts 2017 May 4 8 0 0 0) (Date.fromParts 2017 May 4 12 0 0 0)
       , items =
             [ { title = "First", speaker = "Jane", timeSlot = { day = 1, start = 1, end = 3 } }
             , { title = "Second", speaker = "Joe", timeSlot = { day = 2, start = 2, end = 3 } }
@@ -67,34 +68,52 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    let
-        timesViewForLocationsCount =
-            timesView <| List.length model.locations
-    in
-        div []
-            [ table [] (locationsView model.locations :: (List.map timesViewForLocationsCount model.times))
-            , div [] (List.map itemView model.items)
+    div []
+        [ table [ style [ ( "border", "2px solid black" ) ] ]
+            [ locationsView2 model.locations model.times
             ]
+        ]
 
 
-locationsView : List String -> Html Msg
-locationsView locations =
+locationsView2 : List String -> List Date -> Html Msg
+locationsView2 locations times =
     tr []
-        (th
-            []
-            []
-            :: (List.map
-                    (\location -> th [] [ text location ])
-                    locations
-               )
+        (List.map
+            (columnView times)
+            locations
         )
 
 
-timesView : Int -> Date -> Html Msg
-timesView locationsCount time =
-    tr []
-        (td
-            []
-            [ text <| Date.toFormattedString "h:mm a" time ]
-            :: (List.repeat locationsCount <| td [] [ text "_____" ])
-        )
+columnView : List Date -> String -> Html Msg
+columnView times location =
+    td []
+        [ table []
+            (tr [] [ th [] [ text location ] ]
+                :: (List.map
+                        singleColumnRowView
+                        times
+                   )
+            )
+        ]
+
+
+singleColumnRowView : Date -> Html Msg
+singleColumnRowView time =
+    tr [] [ td [ id "asdf", style [ ( "border", "1px dotted grey" ) ] ] [ text <| Date.toFormattedString "h:mm a" time ] ]
+
+
+
+--   -------   -------   -------
+--  |  ---  | |       | |       |
+--  | |   | | |       | |       |
+--  |  ---  | |       | |       |
+--  |  ---  | |       | |       |
+--  | |   | | |       | |       |
+--  |  ---  | |       | |       |
+--  |  ---  | |       | |       |
+--  | |   | | |       | |       |
+--  |  ---  | |       | |       |
+--  |  ---  | |       | |       |
+--  | |   | | |       | |       |
+--  |  ---  | |       | |       |
+--   -------   -------   -------
