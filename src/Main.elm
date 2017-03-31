@@ -68,11 +68,11 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     let
-        timesViewForCount =
-            timesView (List.length model.locations)
+        timesViewForLocationsCount =
+            timesView <| List.length model.locations
     in
         div []
-            [ table [] ((locationsView model.locations) :: (List.map timesViewForCount model.times))
+            [ table [] (locationsView model.locations :: (List.map timesViewForLocationsCount model.times))
             , div [] (List.map itemView model.items)
             ]
 
@@ -95,6 +95,6 @@ timesView locationsCount time =
     tr []
         (td
             []
-            [ text <| Date.toFormattedString "h:mm" time ]
-            :: (List.repeat locationsCount (td [] [ text "." ]))
+            [ text <| Date.toFormattedString "h:mm a" time ]
+            :: (List.repeat locationsCount <| td [] [ text "_____" ])
         )
