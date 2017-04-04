@@ -70,13 +70,13 @@ view : Model -> Html Msg
 view model =
     div []
         [ table [ style [ ( "border", "2px solid black" ) ] ]
-            [ locationsView2 model.locations model.times
+            [ locationsView model.locations model.times
             ]
         ]
 
 
-locationsView2 : List String -> List Date -> Html Msg
-locationsView2 locations times =
+locationsView : List String -> List Date -> Html Msg
+locationsView locations times =
     tr []
         (List.map
             (columnView times)
@@ -99,21 +99,14 @@ columnView times location =
 
 singleColumnRowView : Date -> Html Msg
 singleColumnRowView time =
-    tr [] [ td [ id "asdf", style [ ( "border", "1px dotted grey" ) ] ] [ text <| Date.toFormattedString "h:mm a" time ] ]
+    tr [] [ td [ id (idTime time), style [ ( "border", "1px dotted grey" ) ] ] [ text <| displayTime time ] ]
 
 
+displayTime : Date -> String
+displayTime date =
+    Date.toFormattedString "h:mm a" date
 
---   -------   -------   -------
---  |  ---  | |       | |       |
---  | |   | | |       | |       |
---  |  ---  | |       | |       |
---  |  ---  | |       | |       |
---  | |   | | |       | |       |
---  |  ---  | |       | |       |
---  |  ---  | |       | |       |
---  | |   | | |       | |       |
---  |  ---  | |       | |       |
---  |  ---  | |       | |       |
---  | |   | | |       | |       |
---  |  ---  | |       | |       |
---   -------   -------   -------
+
+idTime : Date -> String
+idTime date =
+    Date.toFormattedString "yyyy-MM-dd-h-mm" date
