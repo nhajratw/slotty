@@ -99,7 +99,7 @@ columnView times location =
 
 singleColumnRowView : Date -> Html Msg
 singleColumnRowView time =
-    tr [] [ td [ id (idTime time), style [ ( "border", "1px dotted grey" ) ] ] [ text <| displayTime time ] ]
+    tr [] [ td [ id (idTime time), style [ ( "height", "3em" ), ( "border", "1px dotted grey" ) ] ] [ text <| displayTime time ] ]
 
 
 displayTime : Date -> String
